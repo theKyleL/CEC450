@@ -23,6 +23,11 @@ int msgNum = 0;
 /*struct msg outMsg;*/
 /*struct msg inMsg;*/
 
+struct timespec{
+	time_t tv_sec
+	time_t tv_nsec
+} tstamp;
+
 /* Stamp() initializes the clock and then prints out time in sec/nsec every step time ticks */
 int Stamp(void){
 	struct timespec tstamp;
@@ -37,38 +42,48 @@ int Stamp(void){
 }
 
 /* initialize system */
-void messageSetup(void){
-
-	int server, sender1, sender2, sender3;
-
+void message(void){
+	int senderId, receiverId;
 	/* create message queue */
+	if ((mqId = msgQCreate(MAX_MESSAGES,MAX_MESSAGE_LENGTH,MSG_Q_FIFO))== NULL)
+		printf("msgQCreate in failed\n");
+	/* spawn the two tasks that will use the message queue */
+	if((senderId = taskSpawn("t1",110,0x100,2000,(FUNCPTR)Sender,0,0,0,0,0,0,0,0,0,0)) == ERROR)
+		printf("taskSpawn taskOne failed\n");
+	if((receiverId = taskSpawn("t2",110,0x100,2000,(FUNCPTR)Receiver,0,0,0,0,0,0,0, 0,0,0)) == ERROR)
+		printf("taskSpawn taskTwo failed\n");
 }
 
-/*  function to create Receive server */
-void Server(void){
-	char receiverMessage[MAX_MESSAGE_LENGTH];
-	while(1) {
-	/* receive message */
-	if(msgQReceive(sendMQ,receiverMessage,MAX_MESSAGE_LENGTH, WAIT_FOREVER ) == ERROR)
-		printf("msgQReceive in Receiver failed\n");
-	else
-		printf("%d - %d - %d", taskIdSelf(), receiverMessage, Stamp());
 
+/*  function to create Receive server */
+void Sender(void){
+	char message[MAX_MESSAGE_LENGTH];
+	int i = 0;
+	while(1) {
+		/* create and send message */
+		sprintf(message,"message # %d from Sender %d", i, taskIdSelf());
+		printf("SENDER %d MESSAGE %d: \n",taskIdSelf(), i++); /* print what is sent */ if((msgQSend(mqId,message,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
+			printf("msgQSend in Sender failed\n");
+		taskDelay(sysClkRateGet()); /* delay for one second */
 	}
 }
 
 /*  function to create 3 Sender clients */
-void Sender1(void){
-	char senderMessage[MAX_MESSAGE_LENGTH];
-	sprintf(senderMessage, "%d - %d - %d", taskIdSelf(), msgNum++, Stamp());
-	printf(senderMessage);
-
-	msgQSend(sendMQ, senderMessage, MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL);
-	taskDelay(20);
-
-	/* still need to receive */
-
+void Receiver(void){
+	char msgBuf[MAX_MESSAGE_LENGTH];
+	while(1) {
+		/* receive message */
+		if(msgQReceive(mqId,msgBuf,MAX_MESSAGE_LENGTH, WAIT_FOREVER ) == ERROR)
+			printf("msgQReceive in Receiver failed\n");
+		else
+			printf("RECEIVER %d: %s\n",taskIdSelf(), msgBuf);
+		taskDelay(sysClkRateGet()/60); /* delay for 1/60 of second (one tick) */
+	}
 }
+
+
+
+
 
 /*   */
 
