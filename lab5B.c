@@ -48,6 +48,7 @@ int Stamp(void){
 /* initialize system */
 void message(void){
 	int ClientId, ServerId;
+
 	/* create message queues */
 	if ((receiveMQ1 = msgQCreate(MAX_MESSAGES,MAX_MESSAGE_LENGTH,MSG_Q_FIFO))== NULL)
 		printf("msgQCreate in failed\n");
@@ -67,7 +68,7 @@ void message(void){
 	if ((sendMQ3 = msgQCreate(MAX_MESSAGES,MAX_MESSAGE_LENGTH,MSG_Q_FIFO))== NULL)
 		printf("msgQCreate in failed\n");
 
-	/* spawn the two tasks that will use the message queue */
+	/* spawn the four tasks that will use the message queues */
 	if((ClientId = taskSpawn("t1",110,0x100,2000,(FUNCPTR)Client1,0,0,0,0,0,0,0,0,0,0)) == ERROR)
 		printf("taskSpawn taskOne failed\n");
 
@@ -82,7 +83,7 @@ void message(void){
 }
 
 
-/*  function to create Receive server */
+/*  function to create Client1 */
 void Client1(void){
 	char message[MAX_MESSAGE_LENGTH];
 	int i = 0;
@@ -91,24 +92,24 @@ void Client1(void){
 		sprintf(message,"message # %d from Client %d", i, taskIdSelf());
 		printf("SENDER %d MESSAGE %d: \n",taskIdSelf(), i++); /* print what is sent */ if((msgQSend(sendMQ1,message,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
 			printf("msgQSend in Client failed\n");
-		taskDelay(sysClkRateGet()); /* delay for one second */
+		taskDelay(20); /* delay sending 20 ticks */
 	}
 }
 
-/*  function to create Receive server */
+/*  function to create Client2 */
 void Client2(void){
 	char message[MAX_MESSAGE_LENGTH];
 	int i = 0;
 	while(1) {
 		/* create and send message */
-		sprintf(message,"message # %d from Client %d", i, taskIdSelf());
+		sprintf(message,"message # %d from Client %d ", i, taskIdSelf());
 		printf("SENDER %d MESSAGE %d: \n",taskIdSelf(), i++); /* print what is sent */ if((msgQSend(sendMQ2,message,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
 			printf("msgQSend in Client failed\n");
-		taskDelay(sysClkRateGet()); /* delay for one second */
+		taskDelay(40); /* delay sending 40 ticks */
 	}
 }
 
-/*  function to create Receive server */
+/*  function to create Client3 */
 void Client3(void){
 	char message[MAX_MESSAGE_LENGTH];
 	int i = 0;
@@ -117,7 +118,7 @@ void Client3(void){
 		sprintf(message,"message # %d from Client %d", i, taskIdSelf());
 		printf("SENDER %d MESSAGE %d: \n",taskIdSelf(), i++); /* print what is sent */ if((msgQSend(sendMQ3,message,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
 			printf("msgQSend in Client failed\n");
-		taskDelay(sysClkRateGet()); /* delay for one second */
+		ttaskDelay(60); /* delay sending 60 ticks */
 	}
 }
 
