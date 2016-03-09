@@ -18,15 +18,12 @@ int Stamp(void);
 /*  global vars */
 MSG_Q_ID receiveMQ;
 MSG_Q_ID sendMQ;
+MSG_Q_ID mqId;
 int fd, len;
 int msgNum = 0;
 /*struct msg outMsg;*/
 /*struct msg inMsg;*/
 
-struct timespec{
-	time_t tv_sec
-	time_t tv_nsec
-} tstamp;
 
 /* Stamp() initializes the clock and then prints out time in sec/nsec every step time ticks */
 int Stamp(void){
@@ -69,7 +66,7 @@ void Sender(void){
 }
 
 /*  function to create 3 Sender clients */
-void Receiver(void){
+void Server(void){
 	char msgBuf[MAX_MESSAGE_LENGTH];
 	while(1) {
 		/* receive message */
