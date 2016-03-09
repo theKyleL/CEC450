@@ -48,9 +48,25 @@ int Stamp(void){
 /* initialize system */
 void message(void){
 	int ClientId, ServerId;
-	/* create message queue */
-	if ((mqId = msgQCreate(MAX_MESSAGES,MAX_MESSAGE_LENGTH,MSG_Q_FIFO))== NULL)
+	/* create message queues */
+	if ((receiveMQ1 = msgQCreate(MAX_MESSAGES,MAX_MESSAGE_LENGTH,MSG_Q_FIFO))== NULL)
 		printf("msgQCreate in failed\n");
+
+	if ((receiveMQ2 = msgQCreate(MAX_MESSAGES,MAX_MESSAGE_LENGTH,MSG_Q_FIFO))== NULL)
+		printf("msgQCreate in failed\n");
+
+	if ((receiveMQ3 = msgQCreate(MAX_MESSAGES,MAX_MESSAGE_LENGTH,MSG_Q_FIFO))== NULL)
+		printf("msgQCreate in failed\n");
+
+	if ((sendMQ1 = msgQCreate(MAX_MESSAGES,MAX_MESSAGE_LENGTH,MSG_Q_FIFO))== NULL)
+		printf("msgQCreate in failed\n");
+
+	if ((sendMQ2 = msgQCreate(MAX_MESSAGES,MAX_MESSAGE_LENGTH,MSG_Q_FIFO))== NULL)
+		printf("msgQCreate in failed\n");
+
+	if ((sendMQ3 = msgQCreate(MAX_MESSAGES,MAX_MESSAGE_LENGTH,MSG_Q_FIFO))== NULL)
+		printf("msgQCreate in failed\n");
+
 	/* spawn the two tasks that will use the message queue */
 	if((ClientId = taskSpawn("t1",110,0x100,2000,(FUNCPTR)Client1,0,0,0,0,0,0,0,0,0,0)) == ERROR)
 		printf("taskSpawn taskOne failed\n");
