@@ -40,27 +40,27 @@ int Stamp(void){
 
 /* initialize system */
 void message(void){
-	int senderId, receiverId;
+	int ClientId, ServerId;
 	/* create message queue */
 	if ((mqId = msgQCreate(MAX_MESSAGES,MAX_MESSAGE_LENGTH,MSG_Q_FIFO))== NULL)
 		printf("msgQCreate in failed\n");
 	/* spawn the two tasks that will use the message queue */
-	if((senderId = taskSpawn("t1",110,0x100,2000,(FUNCPTR)Sender,0,0,0,0,0,0,0,0,0,0)) == ERROR)
+	if((ClientId = taskSpawn("t1",110,0x100,2000,(FUNCPTR)Client,0,0,0,0,0,0,0,0,0,0)) == ERROR)
 		printf("taskSpawn taskOne failed\n");
-	if((receiverId = taskSpawn("t2",110,0x100,2000,(FUNCPTR)Receiver,0,0,0,0,0,0,0, 0,0,0)) == ERROR)
+	if((ServerId = taskSpawn("t2",110,0x100,2000,(FUNCPTR)Server,0,0,0,0,0,0,0, 0,0,0)) == ERROR)
 		printf("taskSpawn taskTwo failed\n");
 }
 
 
 /*  function to create Receive server */
-void Sender(void){
+void Client(void){
 	char message[MAX_MESSAGE_LENGTH];
 	int i = 0;
 	while(1) {
 		/* create and send message */
-		sprintf(message,"message # %d from Sender %d", i, taskIdSelf());
+		sprintf(message,"message # %d from Client %d", i, taskIdSelf());
 		printf("SENDER %d MESSAGE %d: \n",taskIdSelf(), i++); /* print what is sent */ if((msgQSend(mqId,message,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
-			printf("msgQSend in Sender failed\n");
+			printf("msgQSend in Client failed\n");
 		taskDelay(sysClkRateGet()); /* delay for one second */
 	}
 }
@@ -71,9 +71,9 @@ void Server(void){
 	while(1) {
 		/* receive message */
 		if(msgQReceive(mqId,msgBuf,MAX_MESSAGE_LENGTH, WAIT_FOREVER ) == ERROR)
-			printf("msgQReceive in Receiver failed\n");
+			printf("msgQReceive in Server failed\n");
 		else
-			printf("RECEIVER %d: %s\n",taskIdSelf(), msgBuf);
+			printf("Server %d: %s\n",taskIdSelf(), msgBuf);
 		taskDelay(sysClkRateGet()/60); /* delay for 1/60 of second (one tick) */
 	}
 }
