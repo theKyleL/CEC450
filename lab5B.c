@@ -34,18 +34,19 @@ int loopi = 0;
 
 
 /* Stamp() prints out time in sec/nsec every step time ticks */
-char* Stamp(void){
+int Stamp1(void){
 	struct timespec tstamp;
-	char strstamp[] = {tstamp.tv_sec};
 	clock_settime(CLOCK_REALTIME, &tstamp);
-	/*	taskDelay(step);*/
 	clock_gettime(CLOCK_REALTIME, &tstamp);
-	/*for ( loopi = 0; loopi < (sizeof(strstamp) / sizeof(strstamp[0])); loopi++){
-		sprintf(strstamp, "%s", strstamp );
-	}*/
+	/*sprintf(strstamp," time: %d sec %d nsec\n", (int) tstamp.tv_sec, (int) tstamp.tv_nsec);*/
+	return (int) tstamp.tv_sec;
+}
 
-	sprintf(strstamp," time: %d sec %d nsec\n", (int) tstamp.tv_sec, (int) tstamp.tv_nsec);
-	return *strstamp;
+int Stamp2(void){
+	struct timespec tstamp;
+	clock_settime(CLOCK_REALTIME, &tstamp);
+	clock_gettime(CLOCK_REALTIME, &tstamp);
+	return (int) tstamp.tv_nsec;
 }
 
 /* initialize system */
