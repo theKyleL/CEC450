@@ -35,7 +35,7 @@ int msgNum = 0;
 /* Stamp() prints out time in sec/nsec every step time ticks */
 char* Stamp(void){
 	struct timespec tstamp;
-	char *strstamp;
+	char strstamp[] = "                           ";
 	clock_settime(CLOCK_REALTIME, &tstamp);
 	/*	taskDelay(step);*/
 	clock_gettime(CLOCK_REALTIME, &tstamp);
