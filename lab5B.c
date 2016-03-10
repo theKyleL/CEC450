@@ -40,7 +40,7 @@ char* Stamp(void){
 	clock_settime(CLOCK_REALTIME, &tstamp);
 	/*	taskDelay(step);*/
 	clock_gettime(CLOCK_REALTIME, &tstamp);
-	for ( loopi = 0; loopi < (sizeof(loopi) / sizeof(loopi[0])); i++){
+	for ( loopi = 0; loopi < (sizeof(strstamp) / sizeof(strstamp[0])); i++){
 		sprintf(strstamp, "%s", strstamp );
 	}
 
