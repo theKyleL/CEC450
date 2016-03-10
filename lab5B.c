@@ -173,7 +173,7 @@ void Server(void){
 		if(msgQReceive(sendMQ3,msgBuf,MAX_MESSAGE_LENGTH, WAIT_FOREVER ) == ERROR)
 			printf("msgQReceive3 in Server failed\n");
 		else{
-			sprintf(msgBuf, "%s received at %d sec %d nsec", msgBuf, Stamp1(), Stamp());
+			sprintf(msgBuf, "%s received at %d sec %d nsec", msgBuf, Stamp1(), Stamp2());
 			printf("%s", msgBuf);
 			if((msgQSend(receiveMQ3,msgBuf,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
 				printf("msgQSend3 in Server failed\n");
