@@ -154,7 +154,7 @@ void Server(void){
 			printf("msgQReceive1 in Server failed\n");
 		else{
 			sprintf(msgBuf, "%s received at %d sec %d nsec\n", msgBuf, Stamp1(), Stamp2());
-			printf("%s", msgBuf);
+			printf("%s\n", msgBuf);
 		if((msgQSend(receiveMQ1,msgBuf,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
 			printf("msgQSend1 in Server failed\n");
 		}
@@ -164,7 +164,7 @@ void Server(void){
 			printf("msgQReceive2 in Server failed\n");
 		else{
 			sprintf(msgBuf, "%s received at %d sec %d nsec\n", msgBuf, Stamp1(), Stamp2());
-			printf("%s", msgBuf);
+			printf("%s\n", msgBuf);
 			if((msgQSend(receiveMQ2,msgBuf,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
 				printf("msgQSend2 in Server failed\n");
 		}
@@ -174,7 +174,7 @@ void Server(void){
 			printf("msgQReceive3 in Server failed\n");
 		else{
 			sprintf(msgBuf, "%s received at %d sec %d nsec\n", msgBuf, Stamp1(), Stamp2());
-			printf("%s", msgBuf);
+			printf("%s\n", msgBuf);
 			if((msgQSend(receiveMQ3,msgBuf,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
 				printf("msgQSend3 in Server failed\n");
 		}
