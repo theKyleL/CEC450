@@ -44,7 +44,7 @@ char* Stamp(void){
 		sprintf(strstamp, "%s", strstamp );
 	}*/
 
-	/* sprintf(strstamp," time: %d sec %d nsec\n", (int) tstamp.tv_sec, (int) tstamp.tv_nsec); */
+	sprintf(strstamp," time: %d sec %d nsec\n", (int) tstamp.tv_sec, (int) tstamp.tv_nsec);
 	return *strstamp;
 }
 
