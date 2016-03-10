@@ -38,7 +38,7 @@ void Stamp(void){
 	clock_settime(CLOCK_REALTIME, &tstamp);
 	/*	taskDelay(step);*/
 	clock_gettime(CLOCK_REALTIME, &tstamp);
-	return("\ntime: %d sec %d nsec", (int) tstamp.tv_sec, (int) tstamp.tv_nsec);
+	printf("\ntime: %d sec %d nsec", (int) tstamp.tv_sec, (int) tstamp.tv_nsec);
 }
 
 /* initialize system */
@@ -86,7 +86,7 @@ void Client1(void){
 	while(1) {
 		/* create and send message */
 		sprintf(message1,"message # %d from Client %d", i, taskIdSelf());
-		printf("Client1 %d MESSAGE %d: at time:\n",taskIdSelf(), i++; /* print what is sent */
+		printf("Client1 %d MESSAGE %d: at time:\n",taskIdSelf(), i++); /* print what is sent */
 		if((msgQSend(sendMQ1,message1,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
 			printf("msgQSend in Client failed\n");
 		taskDelay(20); /* delay sending 20 ticks */
@@ -166,12 +166,5 @@ void Server(void){
 			if((msgQSend(receiveMQ3,msgBuf,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
 				printf("msgQSend3 in Server failed\n");
 		}
+	}
 }
-
-
-
-
-
-/*   */
-
-/*   */
