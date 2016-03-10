@@ -94,7 +94,7 @@ void Client1(void){
 	while(1) {
 		/* create and send message */
 		/*sprintf(message1,"message # %d from Client %d", msgNum, taskIdSelf());*/
-		sprintf(message1,"%d - %d - %s\n", taskIdSelf(), msgNum++, Stamp());
+		sprintf(message1,"%d - %d - %d sec %d nsec\n", taskIdSelf(), msgNum++, Stamp1(), Stamp2());
 		printf("%s\n",message1); /* print what is sent */
 		if((msgQSend(sendMQ1,message1,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
 			printf("msgQSend in Client failed\n");
@@ -103,7 +103,7 @@ void Client1(void){
 		if(msgQReceive(receiveMQ1,message1,MAX_MESSAGE_LENGTH, WAIT_FOREVER ) == ERROR)
 			printf("msgQReceive1 in Client1 failed\n");
 		else
-			printf("%s Received at %s\n", message1, Stamp());
+			printf("%s Received at %d sec %d nsec\n", message1, Stamp1(), Stamp2());
 	}
 }
 
@@ -113,7 +113,7 @@ void Client2(void){
 	while(1) {
 		/* create and send message */
 		/*sprintf(message2,"message # %d from Client %d ", msgNum, taskIdSelf());*/
-		sprintf(message2,"%d - %d - %s", taskIdSelf(), msgNum++, Stamp());
+		sprintf(message2,"%d - %d - %d sec %d nsec", taskIdSelf(), msgNum++, Stamp1(), Stamp2());
 		printf("%s\n",message2); /* print what is sent */
 		if((msgQSend(sendMQ2,message2,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
 			printf("msgQSend in Client2 failed\n");
@@ -122,7 +122,7 @@ void Client2(void){
 		if(msgQReceive(receiveMQ2,message2,MAX_MESSAGE_LENGTH, WAIT_FOREVER ) == ERROR)
 			printf("msgQReceive2 in Client2 failed\n");
 		else
-			printf("%s Received at %s\n", message2, Stamp());
+			printf("%s Received at %d sec %d nsec\n", message2, Stamp1(), Stamp2());
 	}
 }
 
@@ -132,7 +132,7 @@ void Client3(void){
 	while(1) {
 		/* create and send message */
 		/*sprintf(message3,"message # %d from Client %d", msgNum, taskIdSelf());*/
-		sprintf(message3,"%d - %d - %s", taskIdSelf(), msgNum++, Stamp());
+		sprintf(message3,"%d - %d - %d sec %d nsec", taskIdSelf(), msgNum++, Stamp1(), Stamp2());
 		printf("%s\n", message3); /* print what is sent */
 		if((msgQSend(sendMQ3,message3,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
 			printf("msgQSend in Client failed\n");
@@ -141,7 +141,7 @@ void Client3(void){
 		if(msgQReceive(receiveMQ3,message3,MAX_MESSAGE_LENGTH, WAIT_FOREVER ) == ERROR)
 			printf("msgQReceiv3 in Client3 failed\n");
 		else
-			printf("%s Received at %s\n", message3, Stamp());
+			printf("%s Received at %d sec %d nsec\n", message3, Stamp1(), Stamp2());
 	}
 }
 
@@ -153,7 +153,7 @@ void Server(void){
 		if(msgQReceive(sendMQ1,msgBuf,MAX_MESSAGE_LENGTH, WAIT_FOREVER ) == ERROR)
 			printf("msgQReceive1 in Server failed\n");
 		else{
-			sprintf(msgBuf, "%s received at %s", msgBuf, Stamp());
+			sprintf(msgBuf, "%s received at %d sec %d nsec", msgBuf, Stamp1(), Stamp2());
 			printf("%s", msgBuf);
 		if((msgQSend(receiveMQ1,msgBuf,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
 			printf("msgQSend1 in Server failed\n");
@@ -163,7 +163,7 @@ void Server(void){
 		if(msgQReceive(sendMQ2,msgBuf,MAX_MESSAGE_LENGTH, WAIT_FOREVER ) == ERROR)
 			printf("msgQReceive2 in Server failed\n");
 		else{
-			sprintf(msgBuf, "%s received at %s", msgBuf, Stamp());
+			sprintf(msgBuf, "%s received at %d sec %d nsec", msgBuf, Stamp1(), Stamp2());
 			printf("%s", msgBuf);
 			if((msgQSend(receiveMQ2,msgBuf,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
 				printf("msgQSend2 in Server failed\n");
@@ -173,7 +173,7 @@ void Server(void){
 		if(msgQReceive(sendMQ3,msgBuf,MAX_MESSAGE_LENGTH, WAIT_FOREVER ) == ERROR)
 			printf("msgQReceive3 in Server failed\n");
 		else{
-			sprintf(msgBuf, "%s received at %s", msgBuf, Stamp());
+			sprintf(msgBuf, "%s received at %d sec %d nsec", msgBuf, Stamp1(), Stamp());
 			printf("%s", msgBuf);
 			if((msgQSend(receiveMQ3,msgBuf,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
 				printf("msgQSend3 in Server failed\n");
