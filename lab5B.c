@@ -28,6 +28,7 @@ MSG_Q_ID sendMQ3;
 /*MSG_Q_ID mqId;*/
 int fd, len;
 int msgNum = 0;
+int loopi = 0;
 /*struct msg outMsg;*/
 /*struct msg inMsg;*/
 
@@ -35,11 +36,15 @@ int msgNum = 0;
 /* Stamp() prints out time in sec/nsec every step time ticks */
 char* Stamp(void){
 	struct timespec tstamp;
-	char strstamp[] = "                           ";
+	char strstamp[] = {tstamp.tv_sec};
 	clock_settime(CLOCK_REALTIME, &tstamp);
 	/*	taskDelay(step);*/
 	clock_gettime(CLOCK_REALTIME, &tstamp);
-	sprintf(strstamp," time: %d sec %d nsec\n", (int) tstamp.tv_sec, (int) tstamp.tv_nsec);
+	for ( loopi = 0; loopi < (sizeof(loopi) / sizeof(loopi[0])); i++)
+
+	sprintf(strstamp, "%s", strstamp );
+
+	/* sprintf(strstamp," time: %d sec %d nsec\n", (int) tstamp.tv_sec, (int) tstamp.tv_nsec); */
 	return strstamp;
 }
 
@@ -87,7 +92,7 @@ void Client1(void){
 	while(1) {
 		/* create and send message */
 		/*sprintf(message1,"message # %d from Client %d", msgNum, taskIdSelf());*/
-		sprintf(message1,"%d - %d - %s", taskIdSelf(), msgNum++, Stamp());
+		sprintf(message1,"%d - %d - %s\n", taskIdSelf(), msgNum++, Stamp());
 		printf("%s\n",message1); /* print what is sent */
 		if((msgQSend(sendMQ1,message1,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
 			printf("msgQSend in Client failed\n");
