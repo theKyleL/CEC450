@@ -38,7 +38,7 @@ void Stamp(void){
 	clock_settime(CLOCK_REALTIME, &tstamp);
 	/*	taskDelay(step);*/
 	clock_gettime(CLOCK_REALTIME, &tstamp);
-	printf("\ntime: %d sec %d nsec", (int) tstamp.tv_sec, (int) tstamp.tv_nsec);
+	printf(" time: %d sec %d nsec\n", (int) tstamp.tv_sec, (int) tstamp.tv_nsec);
 }
 
 /* initialize system */
@@ -84,7 +84,9 @@ void Client1(void){
 	char message1[MAX_MESSAGE_LENGTH];
 	while(1) {
 		/* create and send message */
-		sprintf(message1,"message # %d from Client %d", msgNum, taskIdSelf());
+		//sprintf(message1,"message # %d from Client %d", msgNum, taskIdSelf());
+		sprintf(message1,"%d - %d - ", taskIdSelf(), msgNum);
+		Stamp();
 		printf("Client1 %d MESSAGE %d: at time:\n",taskIdSelf(), msgNum++); /* print what is sent */
 		if((msgQSend(sendMQ1,message1,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
 			printf("msgQSend in Client failed\n");
@@ -102,7 +104,9 @@ void Client2(void){
 	char message2[MAX_MESSAGE_LENGTH];
 	while(1) {
 		/* create and send message */
-		sprintf(message2,"message # %d from Client %d ", msgNum, taskIdSelf());
+		//sprintf(message2,"message # %d from Client %d ", msgNum, taskIdSelf());
+		sprintf(message2,"%d - %d - ", taskIdSelf(), msgNum);
+		Stamp();
 		printf("Client2 %d MESSAGE %d: \n",taskIdSelf(), msgNum++); /* print what is sent */
 		if((msgQSend(sendMQ2,message2,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
 			printf("msgQSend in Client2 failed\n");
@@ -120,7 +124,9 @@ void Client3(void){
 	char message3[MAX_MESSAGE_LENGTH];
 	while(1) {
 		/* create and send message */
-		sprintf(message3,"message # %d from Client %d", msgNum, taskIdSelf());
+		//sprintf(message3,"message # %d from Client %d", msgNum, taskIdSelf());
+		sprintf(message3,"%d - %d - ", taskIdSelf(), msgNum);
+		Stamp();
 		printf("Client3 %d MESSAGE %d: \n",taskIdSelf(), msgNum++); /* print what is sent */
 		if((msgQSend(sendMQ3,message3,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
 			printf("msgQSend in Client failed\n");
