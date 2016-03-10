@@ -40,9 +40,9 @@ char* Stamp(void){
 	clock_settime(CLOCK_REALTIME, &tstamp);
 	/*	taskDelay(step);*/
 	clock_gettime(CLOCK_REALTIME, &tstamp);
-	for ( loopi = 0; loopi < (sizeof(loopi) / sizeof(loopi[0])); i++)
-
-	sprintf(strstamp, "%s", strstamp );
+	for ( loopi = 0; loopi < (sizeof(loopi) / sizeof(loopi[0])); i++){
+		sprintf(strstamp, "%s", strstamp );
+	}
 
 	/* sprintf(strstamp," time: %d sec %d nsec\n", (int) tstamp.tv_sec, (int) tstamp.tv_nsec); */
 	return strstamp;
