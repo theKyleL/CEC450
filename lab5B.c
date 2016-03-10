@@ -82,11 +82,10 @@ void message(void){
 /*  function to create Client1 */
 void Client1(void){
 	char message1[MAX_MESSAGE_LENGTH];
-	int i = 0;
 	while(1) {
 		/* create and send message */
-		sprintf(message1,"message # %d from Client %d", i, taskIdSelf());
-		printf("Client1 %d MESSAGE %d: at time:\n",taskIdSelf(), i++); /* print what is sent */
+		sprintf(message1,"message # %d from Client %d", msgNum, taskIdSelf());
+		printf("Client1 %d MESSAGE %d: at time:\n",taskIdSelf(), msgNum++); /* print what is sent */
 		if((msgQSend(sendMQ1,message1,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
 			printf("msgQSend in Client failed\n");
 		taskDelay(20); /* delay sending 20 ticks */
@@ -101,11 +100,10 @@ void Client1(void){
 /*  function to create Client2 */
 void Client2(void){
 	char message2[MAX_MESSAGE_LENGTH];
-	int i = 0;
 	while(1) {
 		/* create and send message */
-		sprintf(message2,"message # %d from Client %d ", i, taskIdSelf());
-		printf("Client2 %d MESSAGE %d: \n",taskIdSelf(), i++); /* print what is sent */
+		sprintf(message2,"message # %d from Client %d ", msgNum, taskIdSelf());
+		printf("Client2 %d MESSAGE %d: \n",taskIdSelf(), msgNum++); /* print what is sent */
 		if((msgQSend(sendMQ2,message2,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
 			printf("msgQSend in Client2 failed\n");
 		taskDelay(40); /* delay sending 40 ticks */
@@ -120,11 +118,10 @@ void Client2(void){
 /*  function to create Client3 */
 void Client3(void){
 	char message3[MAX_MESSAGE_LENGTH];
-	int i = 0;
 	while(1) {
 		/* create and send message */
-		sprintf(message3,"message # %d from Client %d", i, taskIdSelf());
-		printf("Client3 %d MESSAGE %d: \n",taskIdSelf(), i++); /* print what is sent */
+		sprintf(message3,"message # %d from Client %d", msgNum, taskIdSelf());
+		printf("Client3 %d MESSAGE %d: \n",taskIdSelf(), msgNum++); /* print what is sent */
 		if((msgQSend(sendMQ3,message3,MAX_MESSAGE_LENGTH, WAIT_FOREVER, MSG_PRI_NORMAL))== ERROR)
 			printf("msgQSend in Client failed\n");
 		taskDelay(60); /* delay sending 60 ticks */
