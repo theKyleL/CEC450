@@ -10,7 +10,8 @@ void Server(void);
 void Client1(void);
 void Client2(void);
 void Client3(void);
-char* Stamp(void);
+int Stamp1(void);
+int Stamp2(void);
 
 /*  defines */
 #define MAX_MESSAGE_LENGTH 50
