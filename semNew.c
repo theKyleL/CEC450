@@ -53,7 +53,7 @@ void init(void){
 /* sensor function atomically increments the values of data */
 void Sensor(void){
   while(1){
-    tIn = getTick();
+    tIn = tickGet();
     semTake(semBin1,WAIT_FOREVER); /* begin critical section */
     data.x++;
     data.y++;
@@ -67,7 +67,7 @@ void Display(void){
   int count = 0;
   while(1){
     semTake(semBin2, WAIT_FOREVER); /* begin critical section */
-    tFin = getTick();
+    tFin = tickGet();
     ticks = tFin - tIn;
     logMsg("Display #%d=> %d %d %d at %d ticks\n", count++, data.x ,data.y ,data.z, ticks, ticks /* not sure why */);
     data.x=0;
