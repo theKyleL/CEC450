@@ -29,8 +29,10 @@ int taskSensor;
 int taskDisplay;
 
 /* semaphores */
+/*
 SEM_Id semBin1;
 SEM_Id semBin2;
+*/
 
 /* declare functions */
 void init(void);
@@ -41,10 +43,9 @@ void init(void){
   semBin1 = semBCreate(SEM_Q_PRIORITY, SEM_FULL); /* create binary semaphore allowing sensor task to run first */
   semBin2 = semBCreate(SEM_Q_PRIORITY, SEM_EMPTY); /* create binary semaphore requiring display task to wait */
 
-
   /* spawn tasks */
-  taskSensor = taskSpawn("sens", 95, 0x100, 2000, (FUNCPTR)Sensor, null, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-  taskDisplay = taskSpawn("disp", 95, 0x100, 2000, (FUNCPTR)Display, null, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  taskSensor = taskSpawn("sens", 95, 0x100, 2000, (FUNCPTR)Sensor, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  taskDisplay = taskSpawn("disp", 95, 0x100, 2000, (FUNCPTR)Display, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 }
 
 /* sensor function atomically increments the values of data */
