@@ -6,7 +6,8 @@
 */
 
 #include <vxWorks.h> /* Always include this as the first thing in every program */
-#include <time.h> /* we use clock_gettime */
+/*#include <time.h> /* we use clock_gettime */
+#include <tickLib.h> /* using tickGet() */
 #include <taskLib.h> /* we use tasks */
 #include <sysLib.h> /* we use sysClk... */
 #include <semLib.h> /* we use semaphores */
@@ -28,6 +29,8 @@ int x; int y;int z;
 int taskSensor;
 int taskDisplay;
 int ticks = 0;
+int tIn = 0;
+int tFin = 0;
 
 /* semaphores */
 SEM_ID semBin1;
@@ -50,13 +53,12 @@ void init(void){
 /* sensor function atomically increments the values of data */
 void Sensor(void){
   while(1){
-    /* begin critical section */
-    semTake(semBin1,WAIT_FOREVER);
+    tIn = getTick();
+    semTake(semBin1,WAIT_FOREVER); /* begin critical section */
     data.x++;
     data.y++;
     data.z++;
-    semGive(semBin2);
-    /* allow display to run */
+    semGive(semBin2); /* allow display to run */
   }
 }
 
@@ -64,15 +66,14 @@ void Sensor(void){
 void Display(void){
   int count = 0;
   while(1){
-    /* begin critical section */
-    semTake(semBin2, WAIT_FOREVER);
-    logMsg("Display #%d=> %d %d %d at %d ticks\n", count, data.x ,data.y ,data.z, ticks);
+    semTake(semBin2, WAIT_FOREVER); /* begin critical section */
+    tFin = getTick();
+    ticks = tFin - tIn;
+    logMsg("Display #%d=> %d %d %d at %d ticks\n", count++, data.x ,data.y ,data.z, ticks, ticks /* not sure why */);
     data.x=0;
     data.y=0;
     data.z=0;
-    count++;
-    /* allow sensor to run */
-    semGive(semBin1);
+    semGive(semBin1); /* allow sensor to run */
   }
 }
 
