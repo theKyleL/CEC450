@@ -27,11 +27,11 @@ int x; int y;int z;
 
 int taskSensor;
 int taskDisplay;
-int ticks=0;
+int ticks = 0;
 
 /* semaphores */
-SEM_Id semBin1;
-SEM_Id semBin2;
+SEM_ID semBin1;
+SEM_ID semBin2;
 
 /* declare functions */
 void init(void);
