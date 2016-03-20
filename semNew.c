@@ -43,8 +43,8 @@ void init(void){
   semBin2 = semBCreate(SEM_Q_PRIORITY, SEM_EMPTY); /* create binary semaphore requiring display task to wait */
 
   /* spawn tasks */
-  taskSensor = taskSpawn("sens", 95, 0x100, 2000, (FUNCPTR)Sensor, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-  taskDisplay = taskSpawn("disp", 95, 0x100, 2000, (FUNCPTR)Display, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  taskSensor = taskSpawn("sens", 95, 0x100, 2000, (FUNCPTR)Sensor, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  taskDisplay = taskSpawn("disp", 95, 0x100, 2000, (FUNCPTR)Display, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 }
 
 /* sensor function atomically increments the values of data */
@@ -55,7 +55,8 @@ void Sensor(void){
     data.x++;
     data.y++;
     data.z++;
-    semGive(semBin2); /* end crit section */
+    semGive(semBin2);
+    /* allow display to run */
   }
 }
 
@@ -65,11 +66,12 @@ void Display(void){
   while(1){
     /* begin critical section */
     semTake(semBin2, WAIT_FOREVER);
-    logMsg("Display #%d=> %d %d %d at %d ticks\n", count++, data.x ,data.y ,data.z, ticks);
+    logMsg("Display #%d=> %d %d %d at %d ticks\n", count, data.x ,data.y ,data.z, ticks);
     data.x=0;
     data.y=0;
     data.z=0;
-    /* end crit section */
+    count++;
+    /* allow sensor to run */
     semGive(semBin1);
   }
 }
