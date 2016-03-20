@@ -26,7 +26,7 @@ int x; int y;int z;
 } data;
 
 /* semaphore */
-SEM_Id semEx;
+SEM_Id semBin1, semBin2;
 
 /* declare functions */
 void init(void);
@@ -34,8 +34,9 @@ void Sensor(void);
 void Display(void);
 
 void init(void){
-  semEx = semMCreate(SEM_Q_FIFO | SEM_DELETE_SAFE); /* create mutex semaphore */
-  semSync = semBCreate(); /* create binary semaphore */
+  semBin1 = semBCreate(SEM_Q_PRIORITY | SEM_FULL); /* create binary semaphore allowing sensor task to run first */
+  semBin2 = semBCreate(SEM_Q_FIFO | SEM_EMPTY); /* create binary semaphore requiring display task to wait */
+
 
   /* spawn tasks */
   taskSensor = taskSpawn("sens", 95, 0x100, 2000, (FUNCPTR)Sensor, null, 0, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -46,11 +47,11 @@ void init(void){
 void Sensor(void){
   while(1){
     /* begin critical section */
-    semTake(semEx,WAIT_FOREVER);
+    semTake(semBin1,WAIT_FOREVER);
     data.x++;
     data.y++;
     data.z++;
-    semGive(semEx); /* end crit section */
+    semGive(semBin2); /* end crit section */
   }
 }
 
@@ -59,14 +60,15 @@ void Display(void){
   int count = 0;
   while(1){
     /* begin critical section */
-    semTake(semEx);
+    semTake(semBin2);
     logMsg("Display #%d=> %d %d %d at %d sec and %d milli_sec\n", count++, data.x ,data.y ,data.z, isec,  milli_sec);
     data.x=0;
     data.y=0;
     data.z=0;
     /* end crit section */
-    semGive(semEx);
+    semGive(semBin1);
   }
 }
 
-/* 3, 3, 5, 4, 4, 3, 5, 5, 4, _ */
+
+/* what number comes next in the sequence? 4, 3, 3, 5, 4, 4, 3, 5, 5, 4, _ */
