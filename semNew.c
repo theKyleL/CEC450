@@ -25,8 +25,12 @@ struct mem{
 int x; int y;int z;
 } data;
 
-/* semaphore */
-SEM_Id semBin1, semBin2;
+int taskSensor;
+int taskDisplay;
+
+/* semaphores */
+SEM_Id semBin1;
+SEM_Id semBin2;
 
 /* declare functions */
 void init(void);
@@ -34,8 +38,8 @@ void Sensor(void);
 void Display(void);
 
 void init(void){
-  semBin1 = semBCreate(SEM_Q_PRIORITY | SEM_FULL); /* create binary semaphore allowing sensor task to run first */
-  semBin2 = semBCreate(SEM_Q_FIFO | SEM_EMPTY); /* create binary semaphore requiring display task to wait */
+  semBin1 = semBCreate(SEM_Q_PRIORITY, SEM_FULL); /* create binary semaphore allowing sensor task to run first */
+  semBin2 = semBCreate(SEM_Q_PRIORITY, SEM_EMPTY); /* create binary semaphore requiring display task to wait */
 
 
   /* spawn tasks */
@@ -60,7 +64,7 @@ void Display(void){
   int count = 0;
   while(1){
     /* begin critical section */
-    semTake(semBin2);
+    semTake(semBin2, WAIT_FOREVER);
     logMsg("Display #%d=> %d %d %d at %d sec and %d milli_sec\n", count++, data.x ,data.y ,data.z, isec,  milli_sec);
     data.x=0;
     data.y=0;
