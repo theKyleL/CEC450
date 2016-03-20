@@ -42,6 +42,7 @@ void Sensor(void);
 void Display(void);
 
 void init(void){
+  tIn = tickGet();
   semBin1 = semBCreate(SEM_Q_PRIORITY, SEM_FULL); /* create binary semaphore allowing sensor task to run first */
   semBin2 = semBCreate(SEM_Q_PRIORITY, SEM_EMPTY); /* create binary semaphore requiring display task to wait */
 
@@ -53,7 +54,6 @@ void init(void){
 /* sensor function atomically increments the values of data */
 void Sensor(void){
   while(1){
-    tIn = tickGet();
     semTake(semBin1,WAIT_FOREVER); /* begin critical section */
     data.x++;
     data.y++;
